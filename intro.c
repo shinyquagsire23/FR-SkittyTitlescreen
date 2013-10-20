@@ -16,12 +16,14 @@
 #define FADE	*(u8*)0x02037AB8
 #define isFading() FADE > 0
 #define second 60;
+#define numFramestoRun 2699
 
 #include "include/gba_keys.h"
 
 void notMain()
 {
 	TIMER[0] = TIMER[0] + 1;
+	TIMER[10] = TIMER[10] + 1;
 	if(init[27] == 0)
 	{
 		initTitle();
@@ -31,7 +33,6 @@ void notMain()
 	}	
 	else if(init[27] == 1)
 	{
-		//Start placing your code here!
 		if(TIMER[0] >= 20)
 		{
 			init[27] = 2;
@@ -88,7 +89,6 @@ void notMain()
 	}
 	else if(init[27] >= 6)
 	{
-		//deleteOAM(1);
 		if(random(3) == 2)
 			spawnParticle();
 		moveUp();
@@ -107,12 +107,12 @@ void notMain()
 	{
 		if(keyDown(KEY_UP))
 		{
-			int (*func)(void) = (int (*)(void))0x080796CD;
+			int (*func)(void) = (int (*)(void))0x080796CD; //Save Delete
 			func();
 		}
 		else
 		{
-			int (*func)(void) = (int (*)(void))0x080796E9;
+			int (*func)(void) = (int (*)(void))0x080796E9; //Berry Update
 			func();
 		}
 		return;
@@ -131,6 +131,21 @@ void notMain()
 		int (*func)(void) = (int (*)(void))0x0800C301;
      		resetVars();
 		int x = func();
+	}
+
+	if(TIMER[10] > numFramestoRun - 80)
+	{
+		fadeScreen();
+		fadeSong();
+		VAR[20] = 0x10;
+		VAR[0] = 0x40;
+		TIMER[10] = 0;
+	}
+	if(VAR[20] == 0x10 && TIMER[10] >= 120)
+	{
+		int (*func)(void) = (int (*)(void))0x080004C5;
+		resetVars();
+		func();
 	}
 	return;
 }

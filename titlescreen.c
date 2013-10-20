@@ -109,7 +109,7 @@ void spawnParticle()
 
 void moveUp()
 {
-	if(VAR[14] == 0xFFFF)
+	if(VAR[14] == 0xFFFF) //Make sure we don't start scrolling until all of our text and stuff is there.
 		return;
 	for(int i = VAR[14]; i < 0x3F; i++)
 	{
