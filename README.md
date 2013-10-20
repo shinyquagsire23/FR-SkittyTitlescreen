@@ -1,4 +1,4 @@
-FR-IntroTemplate
+FR-SkittyTitlescreen
 ================
 ![Custom Intro](http://i569.photobucket.com/albums/ss135/mtinc2/GS_zpsfaa45876.png)
 
