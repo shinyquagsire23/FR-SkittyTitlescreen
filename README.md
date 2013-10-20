@@ -1,6 +1,6 @@
 FR-IntroTemplate
 ================
-![Custom Intro](http://i569.photobucket.com/albums/ss135/mtinc2/PFR_zps53387555.png)
+![Custom Intro](http://i569.photobucket.com/albums/ss135/mtinc2/GS_zpsfaa45876.png)
 
 
 This is a custom title screen for use as an example and template for future custom title screens for the FireRed engine. This code is released under GPLv3. Basically that means that if you modify this code and release it as part of a product you are required to open source it. Don't worry though, it's fun!
