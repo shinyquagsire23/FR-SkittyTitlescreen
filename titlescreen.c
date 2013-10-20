@@ -15,6 +15,7 @@ void initTitle()
 	BG0VOFF = 0x1B8;
 	VAR[5] = 0x1B8;
 	VAR[6] = 0x3C00;
+	VAR[14] = 0xFFFF;
 	BG2X = 0xE000;
 	BG2Y = 0x3C00;
 	//VAR[17] = 0x160 - 0x4;
@@ -69,23 +70,23 @@ void spawnText()
 {
 	int x = 20;
 	//int y = 155;
-	int i = spawnOamFromUnk(&textTemplate,x,158,0x0);
+	int i = spawnOamFromUnk(&textTemplate,x,155,0x0);
 	OAMBuffer[i].oam.tileProPal = 0;
 	x += 32 + 8;
-	i = spawnOamFromUnk(&text2Template,x,158,0x0);
+	i = spawnOamFromUnk(&text2Template,x,155,0x0);
 	OAMBuffer[i].oam.tileProPal = 0;
 	x += 32;
-	i = spawnOamFromUnk(&text3Template,x,158,0x0);
+	i = spawnOamFromUnk(&text3Template,x,155,0x0);
 	OAMBuffer[i].oam.tileProPal = 0;
 	x += 16+8;
-	i = spawnOamFromUnk(&text4Template,x,158,0x0);
+	i = spawnOamFromUnk(&text4Template,x,155,0x0);
 	OAMBuffer[i].oam.tileProPal = 0;
 
 	x += 64+10;
-	i = spawnOamFromUnk(&text5Template,x,158,0x0);
+	i = spawnOamFromUnk(&text5Template,x,155,0x0);
 	OAMBuffer[i].oam.tileProPal = 0;
 	x += 32;
-	i = spawnOamFromUnk(&text6Template,x,158,0x0);
+	i = spawnOamFromUnk(&text6Template,x,155,0x0);
 	OAMBuffer[i].oam.tileProPal = 0;
 }
 
@@ -99,7 +100,7 @@ void spawnParticle()
 		i = spawnOamFromUnk(&particle2Template,0,160,0x0);
 		OAMBuffer[i].derp1 = 1;
 	}
-	if(VAR[14] == 0)
+	if(VAR[14] == 0xFFFF)
 		VAR[14] = i;
 	
 	OAMBuffer[i].pos1.x = i * (random(32) + 19);
@@ -108,6 +109,8 @@ void spawnParticle()
 
 void moveUp()
 {
+	if(VAR[14] == 0xFFFF)
+		return;
 	for(int i = VAR[14]; i < 0x3F; i++)
 	{
 		if(OAMBuffer[i].derp1 == 1)

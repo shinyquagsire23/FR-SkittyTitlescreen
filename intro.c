@@ -13,6 +13,8 @@
 #define BG1Data     ((u16*)0x6008000)
 #define BG2Data     ((u16*)0x600C000)
 #define OAMBuffer ((OamThingy*)0x0202063C)
+#define FADE	*(u8*)0x02037AB8
+#define isFading() FADE > 0
 #define second 60;
 
 #include "include/gba_keys.h"
@@ -84,30 +86,51 @@ void notMain()
 		spawnFlavor();
 		init[27] = 6;
 	}
-	else if(init[27] == 6)
+	else if(init[27] >= 6)
 	{
 		//deleteOAM(1);
 		if(random(3) == 2)
 			spawnParticle();
 		moveUp();
-		pulseEyes();
+		if(!isFading() && VAR[0] < 0x20)
+			pulseEyes();
 	}
-	if((keyDown(KEY_A) || keyDown(KEY_B) || keyDown(KEY_START) || keyDown(KEY_SELECT)) && init[27] == 6)
+	if((keyDown(KEY_A) || keyDown(KEY_START)) && init[27] == 6)
    	{
 		TIMER[0] = 0;
 		VAR[0] = 0x10;
 		init[27] = 12;
 		playCry(0x13B,0);
-		playCry(0x13A,0);
-		fadeSong();
-		
+		playCry(0x13A,0);	
+	}
+	else if(keyDown(KEY_SELECT) && keyDown(KEY_B))
+	{
+		if(keyDown(KEY_UP))
+		{
+			int (*func)(void) = (int (*)(void))0x080796CD;
+			func();
+		}
+		else
+		{
+			int (*func)(void) = (int (*)(void))0x080796E9;
+			func();
+		}
+		return;
 	}
 
-	if(TIMER[0] == 120 && VAR[0] == 0x10)
+	if(TIMER[0] == 60 && VAR[0] == 0x10)
 	{
 		fadeScreenWhite();
 		TIMER[0] = 0;
 		VAR[0] = 0x20;
+	}
+	else if(TIMER[0] == 40 && VAR[0] == 0x10)
+		fadeSong();
+	if(TIMER[0] == 30 && VAR[0] == 0x20)
+	{
+		int (*func)(void) = (int (*)(void))0x0800C301;
+     		resetVars();
+		int x = func();
 	}
 	return;
 }
